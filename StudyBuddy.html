@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Buddy | Your Personal Learning Assistant</title>
+    <meta name="description" content="AI-powered study assistant that helps with homework, exam prep, and learning across all subjects.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary: #4361EE;
+            --primary-light: #E0E7FF;
+            --secondary: #7209B7;
+            --dark: #1E1E24;
+            --gray: #6C757D;
+            --light-gray: #F8F9FA;
+            --white: #FFFFFF;
+            --ai-bubble: #F0F4FF;
+            --user-bubble: #4361EE;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.75rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3A56D4;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* Ad Container */
+        .ad-container {
+            margin: 2rem 0;
+            text-align: center;
+            background: var(--white);
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Chat Interface */
+        .chat-app {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .chat-app {
+                flex-direction: column;
+            }
+        }
+
+        .sidebar {
+            flex: 0 0 280px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            height: fit-content;
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--dark);
+        }
+
+        .subject-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .subject-item {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            color: var(--gray);
+        }
+
+        .subject-item:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .subject-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .subject-icon {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .chat-container {
+            flex: 1;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-header {
+            background: var(--white);
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #EDF2F7;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .ai-info {
+            flex: 1;
+        }
+
+        .ai-name {
+            font-weight: 600;
+            margin-bottom: 0.1rem;
+        }
+
+        .ai-status {
+            font-size: 0.8rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #48BB78;
+            border-radius: 50%;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            background: var(--light-gray);
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: var(--user-bubble);
+            color: white;
+            border-bottom-right-radius: 4px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background: var(--white);
+            border: 1px solid #E2E8F0;
+            border-bottom-left-radius: 4px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        .chat-input-area {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #EDF2F7;
+            background: var(--white);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        #chat-input {
+            flex: 1;
+            padding: 0.9rem 1.25rem;
+            border: 1px solid #E2E8F0;
+            border-radius: var(--radius-md);
+            outline: none;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        #chat-input:focus {
+            border-color: var(--primary);
+        }
+
+        #send-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #send-btn:hover {
+            background: #3A56D4;
+            transform: translateY(-2px);
+        }
+
+        .send-icon {
+            font-size: 1.25rem;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid #E2E8F0;
+            width: fit-content;
+            margin-left: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .typing-text {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--gray);
+            border-radius: 50%;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+
+        /* Features Section */
+        .features {
+            margin: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--dark);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-light);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+
+        .feature-desc {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #ADB5BD;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #2C3A4B;
+            color: #ADB5BD;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">AI</div>
+                <div class="logo-text">StudyBuddy</div>
+            </a>
+            <nav class="nav-links">
+                <a href="/features">Features</a>
+                <a href="/subjects">Subjects</a>
+                <a href="/pricing">Premium</a>
+                <a href="/login">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Top Ad -->
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                 data-ad-slot="YOUR_TOP_AD_SLOT"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
+        <section class="hero">
+            <h1>Your Personal AI Study Assistant</h1>
+            <p>Get instant help with homework, exam preparation, and concept explanations across all subjects. Our AI tutor is available 24/7 to support your learning journey.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary">Try It Free</button>
+                <button class="btn btn-outline">How It Works</button>
+            </div>
+        </section>
+
+        <!-- Main Chat Application -->
+        <div class="chat-app">
+            <div class="sidebar">
+                <h2 class="sidebar-title">📚 Subjects</h2>
+                <ul class="subject-list">
+                    <li class="subject-item active">
+                        <span class="subject-icon">🧠</span> General Knowledge
+                    </li>
+                    <li class="subject-item">
+                        <span class="subject-icon">➗</span> Mathematics
+                    </li>
+                    <li class="subject-item">
+                        <span class="subject-icon">🔬</span> Science
+                    </li>
+                    <li class="subject-item">
+                        <span class="subject-icon">🏛️</span> History
+                    </li>
+                    <li class="subject-item">
+                        <span class="subject-icon">📖</span> Literature
+                    </li>
+                    <li class="subject-item">
+                        <span class="subject-icon">🌎</span> Languages
+                    </li>
+                    <li class="subject-item">
+                        <span class="subject-icon">💻</span> Computer Science
+                    </li>
+                </ul>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="ai-avatar">AI</div>
+                    <div class="ai-info">
+                        <div class="ai-name">Study Buddy</div>
+                        <div class="ai-status">
+                            <span class="status-dot"></span>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message ai-message">
+                        Hello! I'm your AI Study Buddy. I can help with:
+                        <ul style="margin-top: 0.5rem; padding-left: 1.25rem;">
+                            <li>Homework problems</li>
+                            <li>Concept explanations</li>
+                            <li>Exam preparation</li>
+                            <li>Study strategies</li>
+                        </ul>
+                        <div class="message-time">Today, 10:00 AM</div>
+                    </div>
+                    
+                    <div class="message ai-message">
+                        What subject would you like help with today? You can also select a specific topic from the sidebar.
+                        <div class="message-time">Today, 10:00 AM</div>
+                    </div>
+                </div>
+
+                <div class="typing-indicator" id="typing-indicator">
+                    <div class="typing-text">Study Buddy is typing</div>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Ask me anything...">
+                    <button id="send-btn">
+                        <span class="send-icon">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Ad -->
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                 data-ad-slot="YOUR_MIDDLE_AD_SLOT"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features">
+            <h2 class="section-title">Why Students Love StudyBuddy</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Instant Help</h3>
+                    <p class="feature-desc">Get accurate answers to your questions in seconds, anytime you need help.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Personalized Learning</h3>
+                    <p class="feature-desc">Adapts to your learning style and provides customized explanations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Step-by-Step Solutions</h3>
+                    <p class="feature-desc">Understand complex problems with detailed, easy-to-follow explanations.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>StudyBuddy</h3>
+                    <ul class="footer-links">
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/careers">Careers</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/press">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Subjects</h3>
+                    <ul class="footer-links">
+                        <li><a href="/math">Mathematics</a></li>
+                        <li><a href="/science">Science</a></li>
+                        <li><a href="/history">History</a></li>
+                        <li><a href="/literature">Literature</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="/help">Help Center</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                        <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+                        <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+                        <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2023 AI StudyBuddy. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const chatMessages = document.getElementById('chat-messages');
+            const typingIndicator = document.getElementById('typing-indicator');
+            const subjectItems = document.querySelectorAll('.subject-item');
+            
+            // Sample knowledge base
+            const knowledgeBase = {
+                math: {
+                    "What is the Pythagorean theorem?": "The Pythagorean theorem states that in a right-angled triangle, the square of the hypotenuse (the side opposite the right angle) is equal to the sum of the squares of the other two sides. The formula is: <strong>a² + b² = c²</strong> where c is the hypotenuse.",
+                    "How to solve quadratic equations?": "There are three main methods to solve quadratic equations (equations of the form ax² + bx + c = 0):<br><br>1. <strong>Factoring</strong>: Express the equation as a product of two binomials.<br>2. <strong>Quadratic Formula</strong>: x = [-b ± √(b²-4ac)]/2a<br>3. <strong>Completing the Square</strong>: Rewrite the equation in vertex form.",
+                    "What is calculus about?": "Calculus is the mathematical study of continuous change, with two main branches:<br><br>- <strong>Differential Calculus</strong>: Concerned with rates of change (derivatives)<br>- <strong>Integral Calculus</strong>: Concerned with accumulation of quantities (integrals)<br><br>It's fundamental to physics, engineering, economics, and many other fields."
+                },
+                science: {
+                    "Explain photosynthesis": "Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy, usually from the sun, into chemical energy stored in glucose. The overall equation is:<br><br>6CO₂ + 6H₂O + light energy → C₆H₁₂O₆ + 6O₂<br><br>This process occurs in chloroplasts and is vital for life on Earth as it produces oxygen and forms the base of the food chain.",
+                    "What are Newton's laws of motion?": "Newton's three laws of motion:<br><br>1. <strong>Law of Inertia</strong>: An object in motion stays in motion unless acted upon by an external force.<br>2. <strong>F=ma</strong>: Force equals mass times acceleration.<br>3. <strong>Action-Reaction</strong>: For every action there's an equal and opposite reaction.",
+                    "What is the periodic table?": "The periodic table organizes all known chemical elements in order of increasing atomic number (number of protons). Elements are arranged in periods (rows) and groups (columns) that share similar properties. It was created by Dmitri Mendeleev in 1869 and is one of the most important tools in chemistry."
+                },
+                general: {
+                    "How to study effectively?": "Effective study techniques include:<br><br>- <strong>Active Recall</strong>: Test yourself instead of just rereading<br>- <strong>Spaced Repetition</strong>: Review material over increasing intervals<br>- <strong>Pomodoro Technique</strong>: 25-minute focused sessions with short breaks<br>- <strong>Interleaving</strong>: Mix different subjects/topics<br>- <strong>Elaboration</strong>: Explain concepts in your own words",
+                    "What's the best way to take notes?": "Effective note-taking methods:<br><br>1. <strong>Cornell Method</strong>: Divide page into cues, notes, and summary<br>2. <strong>Mind Mapping</strong>: Visual representation of concepts<br>3. <strong>Outline Method</strong>: Hierarchical structure<br>4. <strong>Charting Method</strong>: Information in columns<br><br>Digital tools like Notion or OneNote can also be helpful!"
+                }
+            };
+            
+            // Default responses
+            const defaultResponses = [
+                "I'm still learning about that topic. Could you ask in a different way?",
+                "That's an interesting question! I recommend checking your textbook or reliable online sources for more detailed information.",
+                "I specialize in academic subjects. Could you clarify your question?",
+                "I don't have enough information to answer that precisely. Would you like me to explain a related concept?"
+            ];
+            
+            // Current subject
+            let currentSubject = 'general';
+            
+            // Set up subject selection
+            subjectItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    subjectItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    currentSubject = this.textContent.toLowerCase().includes('math') ? 'math' :
+                                    this.textContent.toLowerCase().includes('science') ? 'science' :
+                                    'general';
+                    
+                    // Add system message about subject change
+                    addMessage(`I've switched to <strong>${this.textContent.trim()}</strong> mode. Ask me anything about this subject!`, 'ai');
+                });
+            });
+            
+            // Send message function
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+                
+                // Add user message to chat
+                addMessage(message, 'user');
+                chatInput.value = '';
+                
+                // Show typing indicator
+                typingIndicator.style.display = 'flex';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Simulate AI thinking (in production, replace with API call)
+                setTimeout(() => {
+                    typingIndicator.style.display = 'none';
+                    
+                    // Find response in knowledge base
+                    let response;
+                    if (knowledgeBase[currentSubject] && knowledgeBase[currentSubject][message]) {
+                        response = knowledgeBase[currentSubject][message];
+                    } else {
+                        // Check other subjects if not found
+                        for (const subject in knowledgeBase) {
+                            if (knowledgeBase[subject][message]) {
+                                response = knowledgeBase[subject][message];
+                                break;
+                            }
+                        }
+                        
+                        // Use random default response if still not found
+                        if (!response) {
+                            response = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+                        }
+                    }
+                    
+                    addMessage(response, 'ai');
+                }, 1500 + Math.random() * 1000); // Random delay for realism
+            }
+            
+            // Add message to chat
+            function addMessage(text, sender) {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+                
+                if (typeof text === 'string') {
+                    messageDiv.innerHTML = text;
+                } else {
+                    messageDiv.textContent = text;
+                }
+                
+                const timeDiv = document.createElement('div');
+                timeDiv.classList.add('message-time');
+                timeDiv.textContent = `Today, ${timeString}`;
+                
+                messageDiv.appendChild(timeDiv);
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Event listeners
+            sendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendMessage();
+            });
+            
+            // Initialize AdSense
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            
+            // Sample welcome questions
+            const welcomeQuestions = [
+                "What's the Pythagorean theorem?",
+                "Explain photosynthesis",
+                "How to study effectively?"
+            ];
+            
+            // Add sample questions after a delay
+            setTimeout(() => {
+                addMessage("Try asking me things like:", 'ai');
+                
+                welcomeQuestions.forEach((question, index) => {
+                    setTimeout(() => {
+                        const questionDiv = document.createElement('div');
+                        questionDiv.classList.add('message');
+                        questionDiv.classList.add('ai-message');
+                        questionDiv.style.cursor = 'pointer';
+                        questionDiv.style.opacity = '0.9';
+                        questionDiv.style.marginTop = '0.5rem';
+                        questionDiv.textContent = question;
+                        
+                        questionDiv.addEventListener('click', function() {
+                            chatInput.value = question;
+                            chatInput.focus();
+                        });
+                        
+                        chatMessages.appendChild(questionDiv);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, index * 300);
+                });
+            }, 3000);
+        });
+    </script>
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": ["WebApplication", "EducationalOrganization"],
+        "name": "AI StudyBuddy",
+        "url": "https://aistudybuddy.com",
+        "description": "AI-powered study assistant that helps students with homework, exam prep, and learning across all subjects.",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "AI StudyBuddy"
+        }
+    }
+    </script>
+</body>
+</html>
